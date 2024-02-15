@@ -8,7 +8,14 @@ class CustomButton extends StatefulWidget{
   String text;
   double? rounded;
   VoidCallback onPressed; 
+
+
+
 CustomButton({this.bgColor,this.textColor,required this.text,this.rounded,required this.onPressed});
+
+  Widget CustomContainer(){
+    return Container(child: Text("container"), color: Colors.blueGrey);
+  }
 
   @override
   State<CustomButton> createState() => _CustomButtonState();
