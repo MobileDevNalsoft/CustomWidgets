@@ -7,7 +7,7 @@ class CustomButton extends StatefulWidget{
   MaterialStateProperty<Color?>? textColor;
   String text;
   double? rounded;
-  Function onPressed; 
+  VoidCallback onPressed; 
 CustomButton({this.bgColor,this.textColor,required this.text,this.rounded,required this.onPressed});
 
   @override
@@ -17,6 +17,6 @@ CustomButton({this.bgColor,this.textColor,required this.text,this.rounded,requir
 class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
-    return TextButton(onPressed: widget.onPressed(), child: Text(widget.text),style: ButtonStyle(backgroundColor: widget.bgColor),);
+    return TextButton(onPressed: widget.onPressed, child: Text(widget.text),style: ButtonStyle(backgroundColor: widget.bgColor),);
   }
 }
