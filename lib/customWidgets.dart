@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class custom_widgets {
+class CustomWidgets {
   
   Widget CustomButton(
       {required VoidCallback onPressed,
