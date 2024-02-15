@@ -13,10 +13,7 @@ class CustomButton extends StatefulWidget{
 
 CustomButton({this.bgColor,this.textColor,required this.text,this.rounded,required this.onPressed});
 
-  Widget CustomContainer(){
-    return Container(child: Text("container"), color: Colors.blueGrey);
-  }
-
+ 
   @override
   State<CustomButton> createState() => _CustomButtonState();
 }
@@ -26,4 +23,9 @@ class _CustomButtonState extends State<CustomButton> {
   Widget build(BuildContext context) {
     return TextButton(onPressed: widget.onPressed, child: Text(widget.text),style: ButtonStyle(backgroundColor: widget.bgColor),);
   }
+
+   Widget CustomContainer(){
+    return Container(child: Text("container"), color: Colors.blueGrey);
+  }
+
 }
