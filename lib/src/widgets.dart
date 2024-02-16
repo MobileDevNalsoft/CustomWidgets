@@ -14,21 +14,6 @@ class Widgets {
     );
   }
 
-  // Widget CustomTextField({TextEditingController? controller,text,required String title,bool? obscureText}) {
-  //   return  TextField(
-  //               controller: controller,
-  //               decoration: InputDecoration(
-  //                 label: Text(title),
-  //                 border: InputBorder.none,
-  //                 contentPadding:
-  //                     EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-  //               ),
-  //               obscureText: obscureText??false ,
-  //               );
-                
-  // }
-
-  @override
   Widget CustomTextField({String? label, String? hintText, prefixIcon, suffixIcon,TextEditingController? controller, bool? obscureText,String? obscuringCharacter}){
     return Container(
       decoration: BoxDecoration(
@@ -36,7 +21,7 @@ class Widgets {
           boxShadow: const [
             BoxShadow(
                 color: Colors.grey,
-                offset: Offset(0, 5),
+                offset: Offset(0, ),
                 blurRadius: 5
             ),
             BoxShadow(
@@ -65,4 +50,42 @@ class Widgets {
       ),
     );
   }
+
+  Widget CustomSnackBar(BuildContext context,String content,Color color){
+   return  ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(content),backgroundColor: color,)
+    );
+  }
+
+  Widget CustomDropDown({ double? width, required String value, required String hint, required List items,required VoidCallback? onChanged, double menuMaxHeight}){
+    return Container(
+      padding: const EdgeInsets.only(left: 20),
+      width: width,
+      decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.grey,
+                offset: Offset(0, 5),
+                blurRadius: 5
+            ),
+            BoxShadow(
+              color: Colors.white,
+            ),
+          ]
+      ),
+      child: DropdownButton<String>(
+        hint: hint,
+        value: value,
+        onChanged: onChanged,
+        items: items,
+        alignment: Alignment.center,
+        menuMaxHeight: menuMaxHeight,
+        borderRadius: BorderRadius.circular(15),
+        underline: Container(),
+      ),
+    );
+  }
+
 }
