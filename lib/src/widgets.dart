@@ -79,7 +79,11 @@ class Widgets {
         hint: hint,
         value: value,
         onChanged: onChanged,
-        items: items,
+        items: items.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value), 
+        );}).toList(),
         alignment: Alignment.center,
         menuMaxHeight: menuMaxHeight,
         borderRadius: BorderRadius.circular(15),
