@@ -21,7 +21,7 @@ class Widgets {
           boxShadow: const [
             BoxShadow(
                 color: Colors.grey,
-                offset: Offset(0, ),
+                offset: Offset(0,0 ),
                 blurRadius: 5
             ),
             BoxShadow(
