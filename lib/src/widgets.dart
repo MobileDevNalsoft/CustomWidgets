@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:rive/rive.dart';
 
 class CustomWidgets {
   static Widget CustomButton(
@@ -98,12 +98,7 @@ class CustomWidgets {
 
   static Widget CustomCircularLoader() {
     return Center(
-      child: Lottie.asset(
-        'assets/animations/logo.json',
-        width: 270, // Assign to controller
-        height: 270,
-        frameRate: const FrameRate(120),
-      ),
+      child: RiveAnimation.asset('assets/animations/logo.riv'),
     );
   }
 }
