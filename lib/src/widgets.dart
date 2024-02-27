@@ -97,8 +97,6 @@ class CustomWidgets {
   }
 
   static Widget CustomCircularLoader() {
-    return Center(
-      child: RiveAnimation.asset('assets/animations/logo.riv'),
-    );
+    return RiveAnimation.asset('assets/animations/logo.riv');
   }
 }
