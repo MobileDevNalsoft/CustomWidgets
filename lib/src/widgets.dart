@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
 class CustomWidgets {
-  static Widget CustomButton(
+  static Widget CustomTextButton(
       {required VoidCallback onPressed,
       required String text,
       MaterialStateProperty<Color?>? bgColor,
@@ -11,6 +11,20 @@ class CustomWidgets {
       onPressed: onPressed,
       child: Text(text),
       style: ButtonStyle(backgroundColor: bgColor),
+    );
+  }
+
+  static Widget CustomElevatedButton({
+    required VoidCallback onPressed,
+    required String text,
+    ButtonStyle? style,
+    MaterialStatesController? statesController
+  }){
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Text(text),
+      style: style,
+      statesController: statesController,
     );
   }
 
