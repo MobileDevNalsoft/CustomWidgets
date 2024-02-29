@@ -14,15 +14,14 @@ class CustomWidgets {
     );
   }
 
-  static Widget CustomElevatedButton({
-    required VoidCallback onPressed,
-    required String text,
-    ButtonStyle? style,
-    MaterialStatesController? statesController
-  }){
+  static Widget CustomElevatedButton(
+      {required VoidCallback onPressed,
+      required Widget child,
+      ButtonStyle? style,
+      MaterialStatesController? statesController}) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(text),
+      child: child,
       style: style,
       statesController: statesController,
     );
