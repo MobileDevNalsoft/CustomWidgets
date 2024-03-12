@@ -16,6 +16,7 @@ class CustomWidgets {
 
   // customized elevated button
   static Widget CustomElevatedButton({
+    GlobalKey? key,
     required VoidCallback onPressed,
     void Function()? onLongPress,
     void Function(bool)? onHover,
@@ -44,6 +45,7 @@ class CustomWidgets {
     InteractiveInkFeatureFactory? splashFactory,
   }) {
     return ElevatedButton(
+      key: key,
       onPressed: onPressed,
       onLongPress: onLongPress,
       onHover: onHover,
