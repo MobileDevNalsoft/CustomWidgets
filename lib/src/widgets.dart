@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:rive/rive.dart';
 
 class CustomWidgets {
@@ -225,6 +226,7 @@ class CustomWidgets {
 typedef ValueChangedCallback = void Function(String? changedValue);
 
 class CustomDropDownWidget extends StatefulWidget {
+  GlobalKey? key;
   bool isOpen = false;
   List<String> items;
   String? hintText;
@@ -234,13 +236,14 @@ class CustomDropDownWidget extends StatefulWidget {
   final ValueChangedCallback? onChanged;
 
   CustomDropDownWidget(
-      {super.key,
+      {this.key,
       required this.items,
       this.hintText,
       this.backgroundColor,
       required this.buttonHeight,
       required this.buttonWidth,
-      this.onChanged});
+      this.onChanged})
+      : super(key: key);
 
   @override
   State<CustomDropDownWidget> createState() => _CustomDropDownState();
