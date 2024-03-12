@@ -127,39 +127,19 @@ class CustomWidgets {
   }
 
   static Widget CustomDropDown(
-      {double? width,
-      String? value,
-      required String hint,
+      {required double buttonHeight,
+      required double buttonWidth,
+      required String hintText,
       required List<String> items,
-      required VoidCallback? onChanged(val),
-      double? menuMaxHeight}) {
-    return Container(
-      padding: const EdgeInsets.only(left: 20),
-      width: width ?? 20,
-      decoration: BoxDecoration(
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: const [
-            BoxShadow(color: Colors.grey, offset: Offset(0, 5), blurRadius: 5),
-            BoxShadow(
-              color: Colors.white,
-            ),
-          ]),
-      child: DropdownButton(
-        hint: Text(hint),
-        // value: value,
-        onChanged: onChanged,
-        items: items.map<DropdownMenuItem<String>>((value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        alignment: Alignment.center,
-        menuMaxHeight: menuMaxHeight ?? 20,
-        borderRadius: BorderRadius.circular(15),
-        underline: Container(),
-      ),
+      MaterialStateProperty<Color?>? backgroundColor,
+      void Function(String?)? onChanged}) {
+    return CustomDropDownWidget(
+      hintText: hintText,
+      buttonHeight: buttonHeight,
+      buttonWidth: buttonWidth,
+      items: items,
+      backgroundColor: backgroundColor,
+      onChanged: onChanged,
     );
   }
 
@@ -167,3 +147,163 @@ class CustomWidgets {
     return RiveAnimation.asset('assets/animations/logo.riv');
   }
 }
+
+//---------------Custom Drop Down Widget----------------//
+
+typedef ValueChangedCallback = void Function(String? changedValue);
+
+class CustomDropDownWidget extends StatefulWidget {
+  bool isOpen = false;
+  List<String> items;
+  String? hintText;
+  MaterialStateProperty<Color?>? backgroundColor;
+  double buttonWidth;
+  double buttonHeight;
+  final ValueChangedCallback? onChanged;
+
+  CustomDropDownWidget(
+      {required this.items,
+      this.hintText,
+      this.backgroundColor,
+      required this.buttonHeight,
+      required this.buttonWidth,
+      this.onChanged});
+
+  @override
+  State<CustomDropDownWidget> createState() => _CustomDropDownState();
+}
+
+class _CustomDropDownState extends State<CustomDropDownWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        home: Scaffold(
+      body: Center(
+        child: SizedBox(
+          height: widget.items.length * 80,
+          child: Stack(
+            children: [
+              SizedBox(
+                  height: widget.buttonHeight,
+                  width: widget.buttonWidth,
+                  child: InkWell(
+                    highlightColor: Colors.black12,
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {
+                      setState(() {
+                        widget.isOpen = !widget.isOpen;
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.only(left: 15, right: 8),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Color.fromARGB(255, 212, 212, 212),
+                                offset: Offset(0, 2),
+                                blurRadius: 5),
+                            BoxShadow(
+                              color: Colors.white,
+                            ),
+                          ] // Optional styling
+                          ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(widget.hintText ?? widget.items[0],
+                              style: TextStyle(
+                                  color: widget.items.any((element) =>
+                                          element == widget.hintText)
+                                      ? Colors.black
+                                      : Colors.black45)),
+                          widget.isOpen
+                              ? Icon(
+                                  Icons.keyboard_arrow_up_rounded,
+                                  color: Colors.black,
+                                )
+                              : Icon(
+                                  Icons.keyboard_arrow_down_rounded,
+                                  color: Colors.black,
+                                )
+                        ],
+                      ),
+                    ),
+                  )),
+              Visibility(
+                visible: widget.isOpen,
+                child: Positioned(
+                  top: widget.buttonHeight + 5, // Adjust offset as needed
+                  left: 0.0,
+                  width:
+                      widget.buttonWidth, // Set width from the widget property
+                  child: Container(
+                      height: widget.items.length * 37,
+                      padding: EdgeInsets.only(top: 10),
+                      // Wrap the dropdown list in a container
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Color.fromARGB(255, 212, 212, 212),
+                                offset: Offset(0, 2),
+                                blurRadius: 5),
+                            BoxShadow(
+                              color: Colors.white,
+                            ),
+                          ] // Optional styling
+                          ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: widget.items
+                            .map((e) => Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    InkWell(
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(e),
+                                          Expanded(
+                                            child: SizedBox(),
+                                          ),
+                                        ],
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          widget.hintText = e;
+                                          widget.isOpen = !widget.isOpen;
+                                          if (widget.onChanged != null) {
+                                            widget.onChanged!(e);
+                                          }
+                                        });
+                                      },
+                                    ),
+                                    widget.items.last != e
+                                        ? Divider(
+                                            color: Color.fromARGB(
+                                                255, 212, 212, 212),
+                                            thickness: 2,
+                                          )
+                                        : SizedBox(
+                                            height: 7,
+                                          )
+                                  ],
+                                ))
+                            .toList(),
+                      )),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ));
+  }
+}
+
+//---------------Custom Drop Down Widget----------------//
