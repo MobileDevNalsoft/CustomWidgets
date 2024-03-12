@@ -120,6 +120,7 @@ class CustomWidgets {
   }
 
   static CustomSnackBar(BuildContext context, String content, Color color) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(content),
       backgroundColor: color,
@@ -166,4 +167,71 @@ class CustomWidgets {
   static Widget CustomCircularLoader() {
     return RiveAnimation.asset('assets/animations/logo.riv');
   }
+
+  static CustomDialogBox({
+    required BuildContext context,
+    required Widget? child,
+    Key? key,
+    List<Widget>? actions,
+    Color? backgroundColor,
+    EdgeInsetsGeometry? iconPadding,
+    Widget? title,
+    Widget? icon,
+    Color? iconColor,
+    EdgeInsetsGeometry? titlePadding,
+    TextStyle? titleTextStyle,
+    EdgeInsetsGeometry? contentPadding,
+    TextStyle? contentTextStyle,
+    EdgeInsetsGeometry? actionsPadding,
+    MainAxisAlignment? actionsAlignment,
+    OverflowBarAlignment? actionsOverflowAlignment,
+    VerticalDirection? actionsOverflowDirection,
+    double? actionsOverflowButtonSpacing,
+    EdgeInsetsGeometry? buttonPadding,
+    double? elevation,
+    Color? shadowColor,
+    Color? surfaceTintColor,
+    String? semanticLabel,
+    Clip? clipBehavior,
+    ShapeBorder? shape,
+    AlignmentGeometry? alignment,
+    bool? scrollable,
+  }) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            actions: actions,
+            title: title,
+            actionsAlignment: actionsAlignment,
+            actionsOverflowAlignment: actionsOverflowAlignment,
+            actionsOverflowButtonSpacing: actionsOverflowButtonSpacing,
+            actionsOverflowDirection: actionsOverflowDirection,
+            actionsPadding: actionsPadding,
+            alignment: alignment,
+            buttonPadding: buttonPadding,
+            clipBehavior: clipBehavior ?? Clip.none,
+            contentPadding: contentPadding,
+            contentTextStyle: contentTextStyle,
+            elevation: elevation,
+            iconColor: iconColor,
+            iconPadding: actionsPadding,
+            scrollable: scrollable ?? true,
+            semanticLabel: semanticLabel,
+            titlePadding: titlePadding,
+            titleTextStyle: titleTextStyle,
+            shadowColor: shadowColor ?? Colors.black,
+            shape: shape,
+            surfaceTintColor: surfaceTintColor,
+            icon: icon,
+            backgroundColor: backgroundColor ?? Colors.white,
+            key: key??GlobalKey(),
+            content: SingleChildScrollView(child: child),
+          );
+        });
+  }
+
 }
+
+
+  
