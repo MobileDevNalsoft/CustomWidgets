@@ -27,7 +27,15 @@ class CustomWidgets {
     MaterialStatesController? statesController,
     required Widget child,
     MaterialStateProperty<TextStyle?>? textStyle,
+    MaterialStateProperty<Color?>? foregroundColor =
+        const MaterialStatePropertyAll(Colors.black),
     MaterialStateProperty<Color?>? backgroundColor,
+    MaterialStateProperty<Color?>? iconColor =
+        const MaterialStatePropertyAll(Colors.black),
+    MaterialStateProperty<Color?>? overlayColor =
+        const MaterialStatePropertyAll(Colors.black12),
+    MaterialStateProperty<Color?>? shadowColor =
+        const MaterialStatePropertyAll(Colors.black),
     MaterialStateProperty<Color?>? surfaceTintColor,
     MaterialStateProperty<double?>? elevation,
     MaterialStateProperty<EdgeInsetsGeometry?>? padding,
@@ -57,15 +65,15 @@ class CustomWidgets {
           elevation: elevation,
           enableFeedback: enableFeedback,
           fixedSize: fixedSize,
-          foregroundColor: MaterialStatePropertyAll(Colors.black),
-          iconColor: MaterialStatePropertyAll(Colors.black),
+          foregroundColor: foregroundColor,
+          iconColor: iconColor,
           iconSize: iconSize,
           maximumSize: maximumSize,
           minimumSize: minimumSize,
           mouseCursor: mouseCursor,
-          overlayColor: MaterialStatePropertyAll(Colors.black12),
+          overlayColor: overlayColor,
           padding: padding,
-          shadowColor: MaterialStatePropertyAll(Colors.black),
+          shadowColor: shadowColor,
           shape: shape,
           side: side,
           splashFactory: splashFactory,
@@ -220,11 +228,11 @@ class _CustomDropDownState extends State<CustomDropDownWidget> {
                           widget.isOpen
                               ? Icon(
                                   Icons.keyboard_arrow_up_rounded,
-                                  color: Colors.black,
+                                  color: Colors.black87,
                                 )
                               : Icon(
                                   Icons.keyboard_arrow_down_rounded,
-                                  color: Colors.black,
+                                  color: Colors.black87,
                                 )
                         ],
                       ),
