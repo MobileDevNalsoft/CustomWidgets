@@ -213,12 +213,11 @@ class CustomWidgets {
             surfaceTintColor: surfaceTintColor,
             icon: icon,
             backgroundColor: backgroundColor ?? Colors.white,
-            key: key??GlobalKey(),
+            key: key ?? GlobalKey(),
             content: SingleChildScrollView(child: child),
           );
         });
   }
-
 }
 
 //---------------Custom Drop Down Widget----------------//
@@ -235,7 +234,8 @@ class CustomDropDownWidget extends StatefulWidget {
   final ValueChangedCallback? onChanged;
 
   CustomDropDownWidget(
-      {required this.items,
+      {super.key,
+      required this.items,
       this.hintText,
       this.backgroundColor,
       required this.buttonHeight,
