@@ -137,13 +137,15 @@ class CustomWidgets {
   }
 
   static Widget CustomDropDown(
-      {required double buttonHeight,
+      {GlobalKey? key,
+      required double buttonHeight,
       required double buttonWidth,
       required String hintText,
       required List<String> items,
       MaterialStateProperty<Color?>? backgroundColor,
       void Function(String?)? onChanged}) {
     return CustomDropDownWidget(
+      key: key,
       hintText: hintText,
       buttonHeight: buttonHeight,
       buttonWidth: buttonWidth,
@@ -226,7 +228,6 @@ class CustomWidgets {
 typedef ValueChangedCallback = void Function(String? changedValue);
 
 class CustomDropDownWidget extends StatefulWidget {
-  GlobalKey? key;
   bool isOpen = false;
   List<String> items;
   String? hintText;
@@ -236,14 +237,13 @@ class CustomDropDownWidget extends StatefulWidget {
   final ValueChangedCallback? onChanged;
 
   CustomDropDownWidget(
-      {this.key,
+      {super.key,
       required this.items,
       this.hintText,
       this.backgroundColor,
       required this.buttonHeight,
       required this.buttonWidth,
-      this.onChanged})
-      : super(key: key);
+      this.onChanged});
 
   @override
   State<CustomDropDownWidget> createState() => _CustomDropDownState();
