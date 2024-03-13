@@ -250,62 +250,27 @@ class CustomDropDownWidget extends StatefulWidget {
 }
 
 class _CustomDropDownState extends State<CustomDropDownWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: widget.items.length * 80,
-      child: Stack(
-        children: [
-          SizedBox(
-              height: widget.buttonHeight,
-              width: widget.buttonWidth,
-              child: InkWell(
-                highlightColor: Colors.black12,
-                borderRadius: BorderRadius.circular(10),
-                onTap: () {
-                  setState(() {
-                    widget.isOpen = !widget.isOpen;
-                  });
-                },
-                child: Container(
-                  padding: EdgeInsets.only(left: 15, right: 8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Color.fromARGB(255, 212, 212, 212),
-                            offset: Offset(0, 2),
-                            blurRadius: 5),
-                        BoxShadow(
-                          color: Colors.white,
-                        ),
-                      ] // Optional styling
-                      ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(widget.hintText ?? widget.items[0],
-                          style: TextStyle(
-                              color: widget.items.any(
-                                      (element) => element == widget.hintText)
-                                  ? Colors.black
-                                  : Colors.black45)),
-                      widget.isOpen
-                          ? Icon(
-                              Icons.keyboard_arrow_up_rounded,
-                              color: Colors.black87,
-                            )
-                          : Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                              color: Colors.black87,
-                            )
-                    ],
-                  ),
-                ),
-              )),
-          Visibility(
-            visible: widget.isOpen,
-            child: Positioned(
+  OverlayEntry? overlay;
+
+  void _changeExpansionStatus() {
+    if (widget.isOpen) {
+      _removeOverlay();
+    } else {
+      _insertOverlay(context);
+    }
+
+    setState(() {
+      widget.isOpen = !widget.isOpen;
+    });
+  }
+
+  void _removeOverlay() {
+    overlay?.remove();
+  }
+
+  void _insertOverlay(BuildContext context) {
+    overlay = OverlayEntry(
+        builder: (context) => Positioned(
               top: widget.buttonHeight + 5, // Adjust offset as needed
               left: 0.0,
               width: widget.buttonWidth, // Set width from the widget property
@@ -368,12 +333,71 @@ class _CustomDropDownState extends State<CustomDropDownWidget> {
                             ))
                         .toList(),
                   )),
+            ));
+
+    Overlay.of(context).insert(overlay!);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: widget.items.length * 80,
+      child: SizedBox(
+          height: widget.buttonHeight,
+          width: widget.buttonWidth,
+          child: InkWell(
+            highlightColor: Colors.black12,
+            borderRadius: BorderRadius.circular(10),
+            onTap: () {
+              // setState(() {
+              _changeExpansionStatus();
+
+              // });
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 15, right: 8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Color.fromARGB(255, 212, 212, 212),
+                        offset: Offset(0, 2),
+                        blurRadius: 5),
+                    BoxShadow(
+                      color: Colors.white,
+                    ),
+                  ] // Optional styling
+                  ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(widget.hintText ?? widget.items[0],
+                      style: TextStyle(
+                          color: widget.items
+                                  .any((element) => element == widget.hintText)
+                              ? Colors.black
+                              : Colors.black45)),
+                  widget.isOpen
+                      ? Icon(
+                          Icons.keyboard_arrow_up_rounded,
+                          color: Colors.black87,
+                        )
+                      : Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: Colors.black87,
+                        )
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
+          )),
     );
   }
 }
 
 //---------------Custom Drop Down Widget----------------//
+/*
+Visibility(
+            visible: widget.isOpen,
+            child: 
+          ),
+*/
