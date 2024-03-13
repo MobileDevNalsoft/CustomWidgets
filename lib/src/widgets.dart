@@ -213,7 +213,7 @@ class CustomWidgets {
   static Widget CustomExpandableFAB({
     bool? initialOpen,
     double distance = 55,
-    required List<ActionButton> children,
+    required List<Widget> children,
   }) {
     return ExpandableFAB(
         initialOpen: initialOpen, distance: distance, children: children);
