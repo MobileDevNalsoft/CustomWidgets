@@ -218,6 +218,16 @@ class CustomWidgets {
     return ExpandableFAB(
         initialOpen: initialOpen, distance: distance, children: children);
   }
+
+  // ignore: non_constant_identifier_names
+  static Widget CustomActionButton(
+      {required Widget icon, Key? key, void Function()? onPressed}) {
+    return ActionButton(
+      icon: icon,
+      key: key,
+      onPressed: onPressed,
+    );
+  }
 }
 
 //----------------CustomExpandedFAB-------------------//
