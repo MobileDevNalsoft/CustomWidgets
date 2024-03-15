@@ -219,6 +219,8 @@ class CustomWidgets {
 
   // ignore: non_constant_identifier_names
   static Widget CustomExpandableFAB({
+    bool? rotational,
+    double? angle,
     Color? color,
     bool? initialOpen,
     double distance = 55,
@@ -229,6 +231,8 @@ class CustomWidgets {
       distance: distance,
       children: children,
       color: color,
+      rotational: rotational,
+      angle: angle,
     );
   }
 
