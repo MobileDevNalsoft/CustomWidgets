@@ -257,14 +257,14 @@ class ExpandableFAB extends StatefulWidget {
       this.color,
       required this.distance,
       required this.children,
-      this.rotational,
+      this.rotational = true,
       this.angle});
 
   final bool? initialOpen;
   final Color? color;
   final double distance;
   final List<Widget> children;
-  bool? rotational = true;
+  bool? rotational;
   double? angle;
 
   @override
@@ -318,7 +318,8 @@ class _ExpandableFABState extends State<ExpandableFAB>
         clipBehavior: Clip.none,
         children: [
           _buildTapToCloseFAB(),
-          ..._buildExpandingActionButtons(widget.angle!),
+          ..._buildExpandingActionButtons(
+              widget.angle!, widget.rotational!, widget.distance),
           _buildTapToOpenFAB()
         ],
       ),
@@ -350,17 +351,18 @@ class _ExpandableFABState extends State<ExpandableFAB>
     );
   }
 
-  List<Widget> _buildExpandingActionButtons(double angle) {
+  List<Widget> _buildExpandingActionButtons(
+      double angle, bool rotational, double distance) {
     final children = <Widget>[];
     final count = widget.children.length;
-    if (widget.rotational!) {
+    if (rotational) {
       final step = 90 / (count - 1);
       for (var i = 0, angleInDegrees = 0.0;
           i < count;
           i++, angleInDegrees += step) {
         children.add(_ExpandingActionButton(
             directionInDegrees: angleInDegrees,
-            maxDistance: widget.distance,
+            maxDistance: distance,
             progress: _expandAnimation,
             child: widget.children[i]));
       }
