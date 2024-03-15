@@ -94,16 +94,24 @@ class CustomWidgets {
 
   // ignore: non_constant_identifier_names
   static Widget CustomTextField(
-      {String? label,
+      {
       String? hintText,
       prefixIcon,
       suffixIcon,
       TextEditingController? controller,
       bool? obscureText,
-      String? obscuringCharacter}) {
+      double? width,
+      double? borderRadius,
+      double? verticalContentPadding,
+      double? horizontalContentPadding,
+      String? obscuringCharacter,
+      Widget? label,
+      TextStyle? textStyle
+      }) {
     return Container(
+      width: width ?? 16,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(borderRadius ?? 5),
           boxShadow: const [
             BoxShadow(color: Colors.grey, offset: Offset(0, 0), blurRadius: 5),
             BoxShadow(
@@ -111,16 +119,18 @@ class CustomWidgets {
             ),
           ]),
       child: TextFormField(
+        style: textStyle,
         controller: controller,
         decoration: InputDecoration(
-          label: Text(label ?? ""),
-          enabledBorder:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-          focusedBorder:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-          hintStyle: const TextStyle(color: Colors.black38),
+          label: label,
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? 5)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(borderRadius ?? 5)),
+          contentPadding: EdgeInsets.symmetric(
+              vertical: verticalContentPadding ?? 12,
+              horizontal: horizontalContentPadding ?? 16),
+          hintStyle: TextStyle(color: Colors.black38),
           hintText: hintText,
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
