@@ -247,17 +247,21 @@ class CustomWidgets {
 
 @immutable
 class ExpandableFAB extends StatefulWidget {
-  const ExpandableFAB(
+  ExpandableFAB(
       {super.key,
       this.initialOpen,
       this.color,
       required this.distance,
-      required this.children});
+      required this.children,
+      this.rotational,
+      this.angle});
 
   final bool? initialOpen;
   final Color? color;
   final double distance;
   final List<Widget> children;
+  bool? rotational = true;
+  double? angle;
 
   @override
   State<ExpandableFAB> createState() => _ExpandableFABState();
@@ -355,6 +359,28 @@ class _ExpandableFABState extends State<ExpandableFAB>
           progress: _expandAnimation,
           child: widget.children[i]));
     }
+
+    if (widget.rotational!) {
+      final step = 90 / (count - 1);
+      for (var i = 0, angleInDegrees = 0.0;
+          i < count;
+          i++, angleInDegrees += step) {
+        children.add(_ExpandingActionButton(
+            directionInDegrees: angleInDegrees,
+            maxDistance: widget.distance,
+            progress: _expandAnimation,
+            child: widget.children[i]));
+      }
+    } else {
+      for (var i = 0; i < count; i++) {
+        children.add(_ExpandingActionButton(
+            directionInDegrees: widget.angle!,
+            maxDistance: widget.distance * (i + 1),
+            progress: _expandAnimation,
+            child: widget.children[i]));
+      }
+    }
+
     return children;
   }
 
