@@ -219,21 +219,22 @@ class CustomWidgets {
 
   // ignore: non_constant_identifier_names
   static Widget CustomExpandableFAB({
-    bool? rotational,
-    double? angle,
+    double horizontalAlignment = 4,
+    bool rotational = true,
+    double angle = 0,
     Color? color,
     bool? initialOpen,
     double distance = 55,
     required List<Widget> children,
   }) {
     return ExpandableFAB(
-      initialOpen: initialOpen,
-      distance: distance,
-      children: children,
-      color: color,
-      rotational: rotational,
-      angle: angle,
-    );
+        initialOpen: initialOpen,
+        distance: distance,
+        children: children,
+        color: color,
+        rotational: rotational,
+        angle: angle,
+        horizontalAlignment: horizontalAlignment);
   }
 
   // ignore: non_constant_identifier_names
@@ -257,8 +258,9 @@ class ExpandableFAB extends StatefulWidget {
       this.color,
       required this.distance,
       required this.children,
-      this.rotational = true,
-      this.angle});
+      this.rotational,
+      this.angle,
+      this.horizontalAlignment});
 
   final bool? initialOpen;
   final Color? color;
@@ -266,6 +268,7 @@ class ExpandableFAB extends StatefulWidget {
   final List<Widget> children;
   bool? rotational;
   double? angle;
+  double? horizontalAlignment;
 
   @override
   State<ExpandableFAB> createState() => _ExpandableFABState();
@@ -318,8 +321,8 @@ class _ExpandableFABState extends State<ExpandableFAB>
         clipBehavior: Clip.none,
         children: [
           _buildTapToCloseFAB(),
-          ..._buildExpandingActionButtons(
-              widget.angle!, widget.rotational!, widget.distance),
+          ..._buildExpandingActionButtons(widget.angle!, widget.rotational!,
+              widget.distance, widget.horizontalAlignment!),
           _buildTapToOpenFAB()
         ],
       ),
@@ -351,8 +354,8 @@ class _ExpandableFABState extends State<ExpandableFAB>
     );
   }
 
-  List<Widget> _buildExpandingActionButtons(
-      double angle, bool rotational, double distance) {
+  List<Widget> _buildExpandingActionButtons(double angle, bool rotational,
+      double distance, double horizontalAlignment) {
     final children = <Widget>[];
     final count = widget.children.length;
     if (rotational) {
@@ -361,6 +364,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
           i < count;
           i++, angleInDegrees += step) {
         children.add(_ExpandingActionButton(
+            horizontalAlignment: horizontalAlignment,
             directionInDegrees: angleInDegrees,
             maxDistance: distance,
             progress: _expandAnimation,
@@ -369,6 +373,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
     } else {
       for (var i = 0; i < count; i++) {
         children.add(_ExpandingActionButton(
+            horizontalAlignment: horizontalAlignment,
             directionInDegrees: angle,
             maxDistance: widget.distance * (i + 1),
             progress: _expandAnimation,
@@ -416,13 +421,15 @@ class _ExpandingActionButton extends StatelessWidget {
       {required this.directionInDegrees,
       required this.maxDistance,
       required this.progress,
-      required this.child});
+      required this.child,
+      required this.horizontalAlignment});
 
   final double
       directionInDegrees; // give offset values based on children to get them in straight
   final double maxDistance;
   final Animation<double> progress;
   final Widget child;
+  final double horizontalAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -434,7 +441,7 @@ class _ExpandingActionButton extends StatelessWidget {
             progress.value *
                 maxDistance); // can modify here to get in straignt line
         return Positioned(
-            right: 4.0 + offset.dx,
+            right: horizontalAlignment + offset.dx,
             bottom: 4.0 + offset.dy,
             child: Transform.rotate(
               angle: (1.0 - progress.value) * math.pi / 2,
