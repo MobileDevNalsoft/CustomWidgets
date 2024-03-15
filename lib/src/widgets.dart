@@ -94,8 +94,7 @@ class CustomWidgets {
 
   // ignore: non_constant_identifier_names
   static Widget CustomTextField(
-      {
-      String? hintText,
+      {String? hintText,
       prefixIcon,
       suffixIcon,
       TextEditingController? controller,
@@ -106,8 +105,7 @@ class CustomWidgets {
       double? horizontalContentPadding,
       String? obscuringCharacter,
       Widget? label,
-      TextStyle? textStyle
-      }) {
+      TextStyle? textStyle}) {
     return Container(
       width: width ?? 16,
       decoration: BoxDecoration(
@@ -377,7 +375,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
             width: 50,
             child: FloatingActionButton(
               shape: const CircleBorder(),
-              backgroundColor: Colors.blueGrey.shade400,
+              backgroundColor: widget.color,
               onPressed: _toggle,
               child: const Icon(
                 Icons.menu_rounded,
