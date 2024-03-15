@@ -211,22 +211,27 @@ class CustomWidgets {
 
   // ignore: non_constant_identifier_names
   static Widget CustomExpandableFAB({
+    Color? color,
     bool? initialOpen,
     double distance = 55,
     required List<Widget> children,
   }) {
     return ExpandableFAB(
-        initialOpen: initialOpen, distance: distance, children: children);
+      initialOpen: initialOpen,
+      distance: distance,
+      children: children,
+      color: color,
+    );
   }
 
   // ignore: non_constant_identifier_names
   static Widget CustomActionButton(
-      {required Widget icon, Key? key, void Function()? onPressed}) {
+      {required Widget icon,
+      Key? key,
+      void Function()? onPressed,
+      Color? color}) {
     return ActionButton(
-      icon: icon,
-      key: key,
-      onPressed: onPressed,
-    );
+        icon: icon, key: key, onPressed: onPressed, color: color);
   }
 }
 
@@ -237,10 +242,12 @@ class ExpandableFAB extends StatefulWidget {
   const ExpandableFAB(
       {super.key,
       this.initialOpen,
+      this.color,
       required this.distance,
       required this.children});
 
   final bool? initialOpen;
+  final Color? color;
   final double distance;
   final List<Widget> children;
 
@@ -308,7 +315,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
       height: 50,
       child: Center(
         child: Material(
-          color: Colors.blueGrey.shade200,
+          color: widget.color,
           shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           elevation: 4,
@@ -376,12 +383,11 @@ class _ExpandableFABState extends State<ExpandableFAB>
 
 @immutable
 class _ExpandingActionButton extends StatelessWidget {
-  const _ExpandingActionButton({
-    required this.directionInDegrees,
-    required this.maxDistance,
-    required this.progress,
-    required this.child,
-  });
+  const _ExpandingActionButton(
+      {required this.directionInDegrees,
+      required this.maxDistance,
+      required this.progress,
+      required this.child});
 
   final double
       directionInDegrees; // give offset values based on children to get them in straight
@@ -416,17 +422,19 @@ class _ExpandingActionButton extends StatelessWidget {
 
 @immutable
 class ActionButton extends StatelessWidget {
-  const ActionButton({super.key, this.onPressed, required this.icon});
+  const ActionButton(
+      {super.key, this.onPressed, required this.icon, this.color});
 
   final VoidCallback? onPressed;
   final Widget icon;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
-      color: Colors.blueGrey.shade500,
+      color: color,
       elevation: 4,
       child: IconButton(
         onPressed: onPressed,
