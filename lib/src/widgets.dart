@@ -318,7 +318,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
         clipBehavior: Clip.none,
         children: [
           _buildTapToCloseFAB(),
-          ..._buildExpandingActionButtons(),
+          ..._buildExpandingActionButtons(widget.angle!),
           _buildTapToOpenFAB()
         ],
       ),
@@ -350,20 +350,9 @@ class _ExpandableFABState extends State<ExpandableFAB>
     );
   }
 
-  List<Widget> _buildExpandingActionButtons() {
+  List<Widget> _buildExpandingActionButtons(double angle) {
     final children = <Widget>[];
     final count = widget.children.length;
-    final step = 90 / (count - 1);
-    for (var i = 0, angleInDegrees = 0.0;
-        i < count;
-        i++, angleInDegrees += step) {
-      children.add(_ExpandingActionButton(
-          directionInDegrees: angleInDegrees,
-          maxDistance: widget.distance,
-          progress: _expandAnimation,
-          child: widget.children[i]));
-    }
-
     if (widget.rotational!) {
       final step = 90 / (count - 1);
       for (var i = 0, angleInDegrees = 0.0;
@@ -378,7 +367,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
     } else {
       for (var i = 0; i < count; i++) {
         children.add(_ExpandingActionButton(
-            directionInDegrees: widget.angle!,
+            directionInDegrees: angle,
             maxDistance: widget.distance * (i + 1),
             progress: _expandAnimation,
             child: widget.children[i]));
