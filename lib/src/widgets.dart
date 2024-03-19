@@ -3,19 +3,6 @@ import 'package:rive/rive.dart';
 import 'dart:math' as math;
 
 class CustomWidgets {
-  // ignore: non_constant_identifier_names
-  static Widget CustomTextButton(
-      {required VoidCallback onPressed,
-      required String text,
-      MaterialStateProperty<Color?>? bgColor,
-      MaterialStateProperty<Color?>? textColor}) {
-    return TextButton(
-      onPressed: onPressed,
-      style: ButtonStyle(backgroundColor: bgColor),
-      child: Text(text),
-    );
-  }
-
   // customized elevated button
   // ignore: non_constant_identifier_names
   static Widget CustomElevatedButton({
@@ -220,6 +207,7 @@ class CustomWidgets {
   // ignore: non_constant_identifier_names
   static Widget CustomExpandableFAB({
     double horizontalAlignment = 4,
+    double verticalAlignment = 4,
     bool rotational = true,
     double angle = 0,
     Color? color,
@@ -228,23 +216,15 @@ class CustomWidgets {
     required List<Widget> children,
   }) {
     return ExpandableFAB(
-        initialOpen: initialOpen,
-        distance: distance,
-        children: children,
-        color: color,
-        rotational: rotational,
-        angle: angle,
-        horizontalAlignment: horizontalAlignment);
-  }
-
-  // ignore: non_constant_identifier_names
-  static Widget CustomActionButton(
-      {required Widget icon,
-      Key? key,
-      void Function()? onPressed,
-      Color? color}) {
-    return ActionButton(
-        icon: icon, key: key, onPressed: onPressed, color: color);
+      initialOpen: initialOpen,
+      distance: distance,
+      children: children,
+      color: color,
+      rotational: rotational,
+      angle: angle,
+      horizontalAlignment: horizontalAlignment,
+      verticalAlignment: verticalAlignment,
+    );
   }
 }
 
@@ -260,7 +240,8 @@ class ExpandableFAB extends StatefulWidget {
       required this.children,
       this.rotational,
       this.angle,
-      this.horizontalAlignment});
+      this.horizontalAlignment,
+      this.verticalAlignment});
 
   final bool? initialOpen;
   final Color? color;
@@ -269,6 +250,7 @@ class ExpandableFAB extends StatefulWidget {
   bool? rotational;
   double? angle;
   double? horizontalAlignment;
+  double? verticalAlignment;
 
   @override
   State<ExpandableFAB> createState() => _ExpandableFABState();
@@ -321,8 +303,12 @@ class _ExpandableFABState extends State<ExpandableFAB>
         clipBehavior: Clip.none,
         children: [
           _buildTapToCloseFAB(),
-          ..._buildExpandingActionButtons(widget.angle!, widget.rotational!,
-              widget.distance, widget.horizontalAlignment!),
+          ..._buildExpandingActionButtons(
+              widget.angle!,
+              widget.rotational!,
+              widget.distance,
+              widget.horizontalAlignment!,
+              widget.verticalAlignment!),
           _buildTapToOpenFAB()
         ],
       ),
@@ -355,7 +341,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
   }
 
   List<Widget> _buildExpandingActionButtons(double angle, bool rotational,
-      double distance, double horizontalAlignment) {
+      double distance, double horizontalAlignment, double verticalAlignment) {
     final children = <Widget>[];
     final count = widget.children.length;
     if (rotational) {
@@ -365,6 +351,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
           i++, angleInDegrees += step) {
         children.add(_ExpandingActionButton(
             horizontalAlignment: horizontalAlignment,
+            verticalAlignment: verticalAlignment,
             directionInDegrees: angleInDegrees,
             maxDistance: distance,
             progress: _expandAnimation,
@@ -374,6 +361,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
       for (var i = 0; i < count; i++) {
         children.add(_ExpandingActionButton(
             horizontalAlignment: horizontalAlignment,
+            verticalAlignment: verticalAlignment,
             directionInDegrees: angle,
             maxDistance: widget.distance * (i + 1),
             progress: _expandAnimation,
@@ -422,7 +410,8 @@ class _ExpandingActionButton extends StatelessWidget {
       required this.maxDistance,
       required this.progress,
       required this.child,
-      required this.horizontalAlignment});
+      required this.horizontalAlignment,
+      required this.verticalAlignment});
 
   final double
       directionInDegrees; // give offset values based on children to get them in straight
@@ -430,6 +419,7 @@ class _ExpandingActionButton extends StatelessWidget {
   final Animation<double> progress;
   final Widget child;
   final double horizontalAlignment;
+  final double verticalAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -442,7 +432,7 @@ class _ExpandingActionButton extends StatelessWidget {
                 maxDistance); // can modify here to get in straignt line
         return Positioned(
             right: horizontalAlignment + offset.dx,
-            bottom: 4.0 + offset.dy,
+            bottom: verticalAlignment + offset.dy,
             child: Transform.rotate(
               angle: (1.0 - progress.value) * math.pi / 2,
               child: child!,
@@ -451,30 +441,6 @@ class _ExpandingActionButton extends StatelessWidget {
       child: FadeTransition(
         opacity: progress,
         child: child,
-      ),
-    );
-  }
-}
-
-@immutable
-class ActionButton extends StatelessWidget {
-  const ActionButton(
-      {super.key, this.onPressed, required this.icon, this.color});
-
-  final VoidCallback? onPressed;
-  final Widget icon;
-  final Color? color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      shape: const CircleBorder(),
-      clipBehavior: Clip.antiAlias,
-      color: color,
-      elevation: 4,
-      child: IconButton(
-        onPressed: onPressed,
-        icon: icon,
       ),
     );
   }
