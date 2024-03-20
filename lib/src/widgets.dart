@@ -211,6 +211,7 @@ class CustomWidgets {
     bool rotational = true,
     double angle = 0,
     Color? color,
+    Color iconColor = Colors.black,
     bool? initialOpen,
     double distance = 55,
     required List<Widget> children,
@@ -224,6 +225,7 @@ class CustomWidgets {
       angle: angle,
       horizontalAlignment: horizontalAlignment,
       verticalAlignment: verticalAlignment,
+      iconColor: iconColor,
     );
   }
 }
@@ -241,7 +243,8 @@ class ExpandableFAB extends StatefulWidget {
       this.rotational,
       this.angle,
       this.horizontalAlignment,
-      this.verticalAlignment});
+      this.verticalAlignment,
+      this.iconColor});
 
   final bool? initialOpen;
   final Color? color;
@@ -251,6 +254,7 @@ class ExpandableFAB extends StatefulWidget {
   double? angle;
   double? horizontalAlignment;
   double? verticalAlignment;
+  Color? iconColor;
 
   @override
   State<ExpandableFAB> createState() => _ExpandableFABState();
@@ -302,20 +306,20 @@ class _ExpandableFABState extends State<ExpandableFAB>
         alignment: Alignment.bottomRight,
         clipBehavior: Clip.none,
         children: [
-          _buildTapToCloseFAB(),
+          _buildTapToCloseFAB(iconColor: widget.iconColor!),
           ..._buildExpandingActionButtons(
               widget.angle!,
               widget.rotational!,
               widget.distance,
               widget.horizontalAlignment!,
               widget.verticalAlignment!),
-          _buildTapToOpenFAB()
+          _buildTapToOpenFAB(iconColor: widget.iconColor!)
         ],
       ),
     );
   }
 
-  Widget _buildTapToCloseFAB() {
+  Widget _buildTapToCloseFAB({Color? iconColor}) {
     return SizedBox(
       width: 50,
       height: 50,
@@ -327,11 +331,11 @@ class _ExpandableFABState extends State<ExpandableFAB>
           elevation: 4,
           child: InkWell(
             onTap: _toggle,
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.all(10),
               child: Icon(
                 Icons.close,
-                color: Colors.black,
+                color: iconColor,
               ),
             ),
           ),
@@ -372,7 +376,7 @@ class _ExpandableFABState extends State<ExpandableFAB>
     return children;
   }
 
-  Widget _buildTapToOpenFAB() {
+  Widget _buildTapToOpenFAB({Color? iconColor}) {
     return IgnorePointer(
       ignoring: _open,
       child: AnimatedContainer(
@@ -391,9 +395,9 @@ class _ExpandableFABState extends State<ExpandableFAB>
               shape: const CircleBorder(),
               backgroundColor: widget.color,
               onPressed: _toggle,
-              child: const Icon(
+              child: Icon(
                 Icons.menu_rounded,
-                color: Colors.black,
+                color: iconColor,
               ),
             ),
           ),
