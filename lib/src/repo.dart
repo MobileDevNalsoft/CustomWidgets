@@ -8,6 +8,7 @@ class CustomAPI{
   final int connectTimeout;
   final int receiveTimeout;
   final int maxRedirects;
+  final Map<String, dynamic>?  headers;
   
   Dio dio;
   LoggingInterceptor loggingInterceptor = LoggingInterceptor();
@@ -17,7 +18,8 @@ class CustomAPI{
     this.dio, {
      this.connectTimeout=5,
      this.receiveTimeout=5,
-     this.maxRedirects=5
+     this.maxRedirects=5,
+     this.headers,
   }) {
     
     dio
@@ -26,9 +28,7 @@ class CustomAPI{
       ..options.receiveTimeout =  Duration(seconds: receiveTimeout)
       ..options.maxRedirects = maxRedirects
       ..httpClientAdapter
-      ..options.headers = {
-        'Content-Type': 'application/json; charset=UTF-8',
-      };
+      ..options.headers = headers??{};
     dio.interceptors.add(loggingInterceptor);
   }
 
