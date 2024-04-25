@@ -1,40 +1,18 @@
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 
-
-
-
 class CustomAPI{
-
-  //get
-
-
-
-  //post
-
-
-
-  //put
-
-
-
-  //delete
-
-
-
-}
-
-
-class DioClient{
   final String baseUrl;
   final LoggingInterceptor? loggingInterceptor;
   final int? connectTimeout;
   final int? receiveTimeout;
   final int? maxRedirects;
+  
   Dio dio = Dio();
 
-  DioClient(
+  CustomAPI(
     this.baseUrl,
     Dio? dioC, {
     this.loggingInterceptor,
@@ -55,111 +33,112 @@ class DioClient{
     dio.interceptors.add(loggingInterceptor!);
   }
 
-  Future<Response> get(
+  Future<ApiResponse> get(
     String uri, {
     Map<String, dynamic>? queryParameters,
-    Options? options,
+    String? apiUsername,
+    String? apiPassword,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      var response = await dio.get(
+      Response response = await dio.get(
         uri,
         queryParameters: queryParameters,
-        options: options,
+        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$apiUsername:$apiPassword'))}'}),
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
-      return response;
+      return ApiResponse.withSuccess(response);
     } on SocketException catch (e) {
       throw SocketException(e.toString());
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      return ApiResponse.withError(e);
     }
   }
 
-  Future<Response> post(
+  Future<ApiResponse> post(
     String uri, {
     data,
     Map<String, dynamic>? queryParameters,
-    Options? options,
+    String? apiUsername,
+    String? apiPassword,
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      var response = await dio.post(
+      Response response = await dio.post(
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: options,
+        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$apiUsername:$apiPassword'))}'}),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response;
+      return ApiResponse.withSuccess(response);
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      return ApiResponse.withError(e);
     }
   }
 
-  Future<Response> put(
+  Future<ApiResponse> put(
     String uri, {
     data,
     Map<String, dynamic>? queryParameters,
-    Options? options,
+    String? apiUsername,
+    String? apiPassword,
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
     try {
-      var response = await dio.put(
+      Response response = await dio.put(
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: options,
+        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$apiUsername:$apiPassword'))}'}),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response;
+      return ApiResponse.withSuccess(response);
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      return ApiResponse.withError(e);
     }
   }
 
-  Future<Response> delete(
+  Future<ApiResponse> delete(
     String uri, {
     data,
     Map<String, dynamic>? queryParameters,
-    Options? options,
+    String? apiUsername,
+    String? apiPassword,
     CancelToken? cancelToken,
   }) async {
     try {
-      var response = await dio.delete(
+      Response response = await dio.delete(
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: options,
+        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$apiUsername:$apiPassword'))}'}),
         cancelToken: cancelToken,
       );
-      return response;
+      return ApiResponse.withSuccess(response);
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      return ApiResponse.withError(e);
     }
   }
 }
-
-
-
 
 
 class LoggingInterceptor extends InterceptorsWrapper {
@@ -207,4 +186,19 @@ class LoggingInterceptor extends InterceptorsWrapper {
         "ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}");
     return super.onError(err, handler);
   }
+}
+
+class ApiResponse {
+  final Response? response;
+  final dynamic error;
+
+  ApiResponse(this.response, this.error);
+
+  ApiResponse.withError(dynamic errorValue)
+      : response = null,
+        error = errorValue;
+
+  ApiResponse.withSuccess(Response responseValue)
+      : response = responseValue,
+        error = null;
 }
