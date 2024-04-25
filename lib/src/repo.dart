@@ -5,32 +5,31 @@ import 'package:dio/dio.dart';
 
 class CustomAPI{
   final String baseUrl;
-  final LoggingInterceptor? loggingInterceptor;
-  final int? connectTimeout;
-  final int? receiveTimeout;
-  final int? maxRedirects;
+  final int connectTimeout;
+  final int receiveTimeout;
+  final int maxRedirects;
   
-  Dio dio = Dio();
+  Dio dio;
+  LoggingInterceptor loggingInterceptor = LoggingInterceptor();
 
   CustomAPI(
     this.baseUrl,
-    Dio? dioC, {
-    this.loggingInterceptor,
-     this.connectTimeout,
-     this.receiveTimeout,
-     this.maxRedirects
+    this.dio, {
+     this.connectTimeout=5,
+     this.receiveTimeout=5,
+     this.maxRedirects=5
   }) {
-    dio = dioC ?? Dio();
+    
     dio
       ..options.baseUrl = baseUrl
-      ..options.connectTimeout =  Duration(seconds: connectTimeout??5)
-      ..options.receiveTimeout =  Duration(seconds: receiveTimeout??5)
-      ..options.maxRedirects = maxRedirects??5
+      ..options.connectTimeout =  Duration(seconds: connectTimeout)
+      ..options.receiveTimeout =  Duration(seconds: receiveTimeout)
+      ..options.maxRedirects = maxRedirects
       ..httpClientAdapter
       ..options.headers = {
         'Content-Type': 'application/json; charset=UTF-8',
       };
-    dio.interceptors.add(loggingInterceptor!);
+    dio.interceptors.add(loggingInterceptor);
   }
 
   Future<ApiResponse> get(
