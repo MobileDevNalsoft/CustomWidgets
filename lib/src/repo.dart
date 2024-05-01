@@ -8,6 +8,8 @@ class CustomAPI{
   final int connectTimeout;
   final int receiveTimeout;
   final int maxRedirects;
+  final String username;
+  final String password;
   final Map<String, dynamic>?  headers;
   
   Dio dio;
@@ -16,6 +18,8 @@ class CustomAPI{
   CustomAPI(
     this.baseUrl,
     this.dio, {
+     required this.username,
+     required this.password,
      this.connectTimeout=5,
      this.receiveTimeout=5,
      this.maxRedirects=5,
@@ -35,8 +39,6 @@ class CustomAPI{
   Future<ApiResponse> get(
     String uri, {
     Map<String, dynamic>? queryParameters,
-    String? apiUsername,
-    String? apiPassword,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
   }) async {
@@ -44,7 +46,7 @@ class CustomAPI{
       Response response = await dio.get(
         uri,
         queryParameters: queryParameters,
-        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$apiUsername:$apiPassword'))}'}),
+        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
@@ -62,8 +64,6 @@ class CustomAPI{
     String uri, {
     data,
     Map<String, dynamic>? queryParameters,
-    String? apiUsername,
-    String? apiPassword,
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -73,7 +73,7 @@ class CustomAPI{
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$apiUsername:$apiPassword'))}'}),
+        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
@@ -90,8 +90,6 @@ class CustomAPI{
     String uri, {
     data,
     Map<String, dynamic>? queryParameters,
-    String? apiUsername,
-    String? apiPassword,
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -101,7 +99,7 @@ class CustomAPI{
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$apiUsername:$apiPassword'))}'}),
+        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
@@ -118,8 +116,6 @@ class CustomAPI{
     String uri, {
     data,
     Map<String, dynamic>? queryParameters,
-    String? apiUsername,
-    String? apiPassword,
     CancelToken? cancelToken,
   }) async {
     try {
@@ -127,7 +123,7 @@ class CustomAPI{
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$apiUsername:$apiPassword'))}'}),
+        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
       );
       return ApiResponse.withSuccess(response);
