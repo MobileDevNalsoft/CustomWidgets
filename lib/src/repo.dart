@@ -41,12 +41,13 @@ class CustomAPI{
     Map<String, dynamic>? queryParameters,
     CancelToken? cancelToken,
     ProgressCallback? onReceiveProgress,
+    Map<String, dynamic>? methodHeaders
   }) async {
     try {
       Response response = await dio.get(
         uri,
         queryParameters: queryParameters,
-        options: Options(headers:headers?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
+        options: Options(headers: headers??methodHeaders?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
@@ -67,13 +68,14 @@ class CustomAPI{
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
+     Map<String, dynamic>? methodHeaders
   }) async {
     try {
       Response response = await dio.post(
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: headers?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
+        options: Options(headers: headers??methodHeaders?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
@@ -93,13 +95,14 @@ class CustomAPI{
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
+     Map<String, dynamic>? methodHeaders
   }) async {
     try {
       Response response = await dio.put(
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: headers??  {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
+        options: Options(headers: headers??methodHeaders??  {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
@@ -117,13 +120,14 @@ class CustomAPI{
     data,
     Map<String, dynamic>? queryParameters,
     CancelToken? cancelToken,
+     Map<String, dynamic>? methodHeaders
   }) async {
     try {
       Response response = await dio.delete(
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: headers?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
+        options: Options(headers: headers??methodHeaders?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
       );
       return ApiResponse.withSuccess(response);
