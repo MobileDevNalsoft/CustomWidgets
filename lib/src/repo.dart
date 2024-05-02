@@ -172,7 +172,7 @@ class LoggingInterceptor extends InterceptorsWrapper {
             responseAsString.substring(i * maxCharactersPerLine, endingIndex));
       }
     } else {
-      print(response.data);
+      print('Got Data');
     }
     print("<-- END HTTP");
     return super.onResponse(response, handler);
