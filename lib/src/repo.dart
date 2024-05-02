@@ -8,8 +8,8 @@ class CustomAPI{
   final int connectTimeout;
   final int receiveTimeout;
   final int maxRedirects;
-  final String username;
-  final String password;
+  final String? username;
+  final String? password;
   final Map<String, dynamic>?  headers;
   
   Dio dio;
@@ -18,8 +18,8 @@ class CustomAPI{
   CustomAPI(
     this.baseUrl,
     this.dio, {
-     required this.username,
-     required this.password,
+     this.username,
+     this.password,
      this.connectTimeout=5,
      this.receiveTimeout=5,
      this.maxRedirects=5,
@@ -46,7 +46,7 @@ class CustomAPI{
       Response response = await dio.get(
         uri,
         queryParameters: queryParameters,
-        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
+        options: Options(headers:headers?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
@@ -73,7 +73,7 @@ class CustomAPI{
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
+        options: Options(headers: headers?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
@@ -99,7 +99,7 @@ class CustomAPI{
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
+        options: Options(headers: headers??  {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
@@ -123,7 +123,7 @@ class CustomAPI{
         uri,
         data: data,
         queryParameters: queryParameters,
-        options: Options(headers: {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
+        options: Options(headers: headers?? {'Authorization': 'Basic ${base64.encode(utf8.encode('$username:$password'))}'}),
         cancelToken: cancelToken,
       );
       return ApiResponse.withSuccess(response);
