@@ -2,8 +2,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 
-class CustomAPI{
+class CustomAPI extends HttpOverrides{
   final String baseUrl;
   final int connectTimeout;
   final int receiveTimeout;
@@ -14,6 +15,7 @@ class CustomAPI{
   
   Dio dio;
   LoggingInterceptor loggingInterceptor = LoggingInterceptor();
+
 
   CustomAPI(
     this.baseUrl,
@@ -34,6 +36,11 @@ class CustomAPI{
       ..httpClientAdapter
       ..options.headers = headers??{};
     dio.interceptors.add(loggingInterceptor);
+    (dio.httpClientAdapter as  IOHttpClientAdapter).createHttpClient = (){
+      final client = HttpClient();
+      client.badCertificateCallback=(cert, host, port) => true;
+      return client;
+    };
   }
 
   Future<ApiResponse> get(
