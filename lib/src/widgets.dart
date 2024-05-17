@@ -449,3 +449,112 @@ class _ExpandingActionButton extends StatelessWidget {
     );
   }
 }
+
+//------------------CustomDropDown-----------------------//
+
+class CustomDropDown extends StatefulWidget {
+  String? dropDownValue;
+  List<String> dropDownValues;
+  String? dropDownName;
+  bool showDropDown = false;
+  double height;
+  double? openHeight; //dropdown when opened
+  double? openWidth; //dropdown when opened
+  double width;
+
+  CustomDropDown(
+      {Key? key,
+      this.dropDownValue,
+      required this.dropDownValues,
+      required this.dropDownName,
+      this.showDropDown = false,
+      required this.height,
+      required this.width,
+       this.openHeight,
+       this.openWidth
+      })
+      : super(key: key);
+
+  @override
+  _CustomDropDownState createState() => _CustomDropDownState();
+}
+
+class _CustomDropDownState extends State<CustomDropDown> {
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: Center(
+        child: SizedBox(
+          height: widget.showDropDown? widget.openHeight:widget.height ,
+          width: widget.width ,
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                widget.showDropDown = !widget.showDropDown;
+              });
+            },
+            child: IntrinsicHeight(
+              child: Card(
+                color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(widget.dropDownName ?? ""),
+                              Text(widget.dropDownValue ?? ""),
+                            ],
+                          ),
+                        ),
+                        widget.showDropDown
+                            ? Icon(Icons.arrow_right_rounded)
+                            : Icon(Icons.arrow_drop_down_rounded)
+                      ],
+                    ),
+                    if (widget.showDropDown)
+                      Expanded(
+                          child: ListView.builder(
+                        itemCount: widget.dropDownValues.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              setState(() {
+                                widget.dropDownValue =
+                                    widget.dropDownValues[index];
+                              });
+                            },
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  value: widget.dropDownValues[index] ==
+                                      widget.dropDownValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      widget.dropDownValue =
+                                          widget.dropDownValues[index];
+                                    });
+                                  },
+                                ),
+                                Text(widget.dropDownValues[index])
+                              ],
+                            ),
+                          );
+                        },
+                      )),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
