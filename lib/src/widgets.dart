@@ -461,6 +461,7 @@ class CustomDropDown extends StatefulWidget {
   double? openHeight; //dropdown when opened
   double? openWidth; //dropdown when opened
   double width;
+  ValueChanged<String> onChanged;
 
   CustomDropDown(
       {Key? key,
@@ -471,7 +472,8 @@ class CustomDropDown extends StatefulWidget {
       required this.height,
       required this.width,
        this.openHeight,
-       this.openWidth
+       this.openWidth,
+      required this.onChanged
       })
       : super(key: key);
 
@@ -535,6 +537,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
                               setState(() {
                                 widget.dropDownValue =
                                     widget.dropDownValues[index];
+                                widget.onChanged!.call(widget.dropDownValues[index]);
                               });
                             },
                           ),
