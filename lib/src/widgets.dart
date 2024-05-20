@@ -526,6 +526,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
                         setState(() {
                           widget.dropDownValue =
                               widget.dropDownValues[index];
+                          widget.onChanged.call(widget.dropDownValues[index]);
                         });
                       },
                       child: Row(
@@ -534,10 +535,11 @@ class _CustomDropDownState extends State<CustomDropDown> {
                             value: widget.dropDownValues[index] ==
                                 widget.dropDownValue,
                             onChanged: (value) {
+                             
                               setState(() {
                                 widget.dropDownValue =
                                     widget.dropDownValues[index];
-                                widget.onChanged!.call(widget.dropDownValues[index]);
+                                widget.onChanged.call(widget.dropDownValues[index]);
                               });
                             },
                           ),
