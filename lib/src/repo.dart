@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dio/browser.dart';
+
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -35,16 +35,17 @@ class CustomAPI extends HttpOverrides {
       ..httpClientAdapter
       ..options.headers = headers ?? {};
     dio.interceptors.add(loggingInterceptor);
-    if (kIsWeb) {
-      (dio.httpClientAdapter as BrowserHttpClientAdapter).withCredentials =
-          true;
-    } else {
+    // if (kIsWeb) {
+    //   (dio.httpClientAdapter as BrowserHttpClientAdapter).withCredentials =
+    //       true;
+    // } 
+    // else {
       (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
         final client = HttpClient();
         client.badCertificateCallback = (cert, host, port) => true;
         return client;
       };
-    }
+    //}
   }
 
   Future<ApiResponse> get(String uri,
