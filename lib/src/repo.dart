@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/browser.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class CustomAPI extends HttpOverrides {
   final String baseUrl;
